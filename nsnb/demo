@@ -1,0 +1,22 @@
+#!/bin/bash
+#Author: cyb
+#Date: 2010-8-19
+
+corpus_path=$1
+result=$2
+index="$corpus_path""index"
+cat $index | while read i
+do
+	class=`echo $i | cut -d ' ' -f1`
+	mailpath=`echo $i | cut -d ' ' -f2`
+	mailpath="$corpus_path""$mailpath"
+#	cat $mailpath | ./bin/nsnbc -c
+#	cat $mailpath | ./bin/nsnbc -t "$class"
+	out=`cat $mailpath | ./bin/nsnbc -c`
+    cat $mailpath | ./bin/nsnbc -t "$class" #train
+	predict=`echo $out | cut -d ' ' -f1`
+	score=`echo $out | cut -d ' ' -f2`
+	out=$mailpath" judge=$class $predict $score"
+	echo $out
+	echo $out >> $2
+done

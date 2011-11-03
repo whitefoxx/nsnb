@@ -1,0 +1,8 @@
+#object file
+*.o
+
+#vim files
+*~
+.DS_Store
+
+

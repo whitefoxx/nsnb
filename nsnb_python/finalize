@@ -1,0 +1,4 @@
+#!/bin/bash
+python nsnb_client.py exit
+rm filter_out
+echo All Done!

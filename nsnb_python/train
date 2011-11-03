@@ -1,0 +1,6 @@
+#!/bin/bash
+if [[ "$1" == "spam" ]]; then
+python nsnb_client.py -t spam "$2"
+else
+python nsnb_client.py -t ham "$2"
+fi

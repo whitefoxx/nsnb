@@ -1,0 +1,24 @@
+#!/bin/bash
+#Author: cyb
+#Date: 2010-8-19
+
+rm ./db/*.tch
+./bin/server &
+corpus_path=$1
+result=$2
+rm $2
+index="$corpus_path""index"
+cat $index | while read i
+do
+	class=`echo $i | cut -d ' ' -f1`
+	mailpath=`echo $i | cut -d ' ' -f2`
+	mailpath="$corpus_path""$mailpath"
+	out=`./bin/client -c "$mailpath"` #predict without train
+	./bin/client -t "$class" "$mailpath" #train
+	predict=`echo $out | cut -d ' ' -f1`
+	score=`echo $out | cut -d ' ' -f2`
+	out=$mailpath" judge=$class $predict $score"
+	echo $out
+	echo $out >> $2
+done
+./bin/client exit

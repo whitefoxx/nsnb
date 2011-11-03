@@ -1,0 +1,37 @@
+CC = g++ 
+CFLAGS = -O3 -Wall 
+INCLUDE = -I/usr/include
+LIB = -L/usr/lib -L/lib -ltokyocabinet -lz -lbz2 -lpthread -lm -lc
+
+nsnb: main nsnbd test nsnbc
+main: nsnb_hdb.o main.o
+	$(CC) $(CFLAGS) tmp/nsnb_hdb.o tmp/main.o -o bin/main $(INCLUDE) $(LIB)
+
+nsnb_hdb.o: 
+	$(CC) $(CFLAGS) -c src/nsnb.cc $(INCLUDE) -o tmp/nsnb_hdb.o
+
+main.o:
+	$(CC) $(CFLAGS) -c src/main.cc $(INCLUDE) -o tmp/main.o
+
+nsnbd: nsnb_hdb.o nsnbd.o
+	$(CC) $(CFLAGS) tmp/nsnb_hdb.o tmp/nsnbd.o -o bin/nsnbd $(INCLUDE) $(LIB)
+
+nsnbd.o:
+	$(CC) $(CFLAGS) -c src/nsnbd.cc $(INCLUDE) -o tmp/nsnbd.o
+
+nsnbc: nsnbc.o
+	$(CC) $(CFLAGS) tmp/nsnbc.o -o bin/nsnbc
+	
+nsnbc.o:
+	$(CC) $(CFLAGS) -c src/nsnbc.cc $(INCLUDE) -o tmp/nsnbc.o
+
+test: test.o
+	$(CC) $(CFLAGS) tmp/test.o -o bin/test
+	
+test.o:
+	$(CC) $(CFLAGS) -c src/test.cc $(INCLUDE) -o tmp/test.o
+
+clean:
+	rm tmp/*.o
+	rm bin/*
+	rm db/*

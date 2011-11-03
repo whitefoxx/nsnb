@@ -1,0 +1,9 @@
+#!/bin/bash
+echo Begin!
+python2.6 nsnb_server.py &
+
+# if using the two layer model, just comment the above line and uncomment the next line
+#python2.6 simple.py &
+#python2.6 nsnb_server_twolayers.py &
+
+sleep 15
